@@ -22,8 +22,8 @@ Init_Stack(Stack **S);
 /*
 ** 入栈
 */
-void
-Push(Stack *S, ElementType e);
+Stack
+*Push(Stack *S, ElementType e);
 
 /*
 ** 出栈
@@ -43,11 +43,6 @@ getTop(Stack *S);
 int
 Size(Stack *S);
 
-/*
-**清空栈
-*/
-int
-Clear(Stack *S);
 /*
 ** 销毁
 ** 参数 {

@@ -3,13 +3,13 @@
 /*
 ** 初始化
 ** param: **S Stack型指针的指针, 也就是 &(*S)
-** 返回值: Stack型指针
+** 返回值: 栈顶指针
 */
 struct Stack *
 Init_Stack(Stack **S)
 {
-  *S = (Stack *)malloc(sizeof(Stack));//头结点
-  (*S)->next = NULL;
+  *S = (Stack *)malloc(sizeof(Stack));//头指针
+  (*S)->next = NULL;//头结点的指针域
   return *S;
 };
 
@@ -18,26 +18,23 @@ Init_Stack(Stack **S)
 ** 初始条件: 栈S已存在
 ** @param S: Stack型指针
 ** @param e: 入栈元素
+** 返回值: 栈顶指针
 ** 操作结果: 插入元素e为新的栈顶元素
 */
-void
-Push(Stack *S, ElementType e)
+Stack
+*Push(Stack *S, ElementType e)
 {
   if (S != NULL)
   {
-    //循环找到尾结点
-    while (S->next != NULL)
-    {
-      S = S->next;
-    }
     //创建新结点
     struct Stack *_sp = (Stack *)malloc(sizeof(Stack));
+    if(!_sp) return NULL;
     //** Key Point **
-    S->next = _sp;
     _sp->data = e;
-    _sp->next = NULL;
+    _sp->next = S;
+    S = _sp;
   }
-  return;
+  return S;
 };
 
 /*
@@ -62,15 +59,11 @@ Pop(Stack *S)
     return OVERFLOW;
   }
   
-  while (S->next != NULL)
-  {
-    if (S->next->next == NULL)
-    {
-      S->next = NULL;
-      return OK;
-    }
-    S = S->next;
-  }
+  // Stack *tmp = S;
+  // S = S->next;
+  // free(tmp);
+  
+  //size - 1
   return OK;
 };
 
@@ -122,17 +115,18 @@ Size(Stack *S)
   }
   return _size;
 }
-/*
-**清空栈
-*/
 
 /*
-** 销毁 TOFIX
-** param: S Stack型指针的
-** }
+** 销毁栈
 */
 void Destroy_Stack(Stack *S)
 {
-  if (!S) return;
-  free(&S);
+  // Stack *tmp;
+  // while (S->next)
+  // {
+  //   tmp = S;
+  //   S = S->next;
+  //   free(tmp);
+  // }
+  // free(S);
 }
