@@ -7,17 +7,21 @@
 int main(int argc, char const *argv[])
 {
   Stack *s = Init_Stack(&s);
-  printf("s addr: %p\n", s);
+  printf("栈底指针地址: %p\n", s);
 
   //TOFIX 直接调用`PUSH(s,3)`
   s = Push(s,3);
-  printf("s addr: %p\n", s);
-
-  printf("%d\n", Size(s));
-  
   s = Push(s,4);
-  Pop(s);
-  printf("%d\n", Size(s));
+
+  printf("获取栈顶元素: %d\n", getTop(s));
+
+  printf("pop before: %p\n", s);
+  s = Pop(s);
+  printf("pop after: %p\n", s);
+
+  printf("栈大小: %d\n", Size(s));
+  
+  Destroy_Stack(s);
   return 0;
 }
 

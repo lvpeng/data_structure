@@ -40,38 +40,25 @@ Stack
 /*
 ** 出栈
 ** 参数 {
-** S: Stack型指针,指向栈底, 带有头结点
+** S: Stack型指针,指向栈顶
 ** }
 ** 初始条件: 栈S已存在 且「非空」
 ** 操作结果: 删除S的栈顶元素，返回结果Status
 */
-Status
-Pop(Stack *S)
+Stack
+*Pop(Stack *S)
 {
-  //S不存在
-  if (S == NULL)
-  {
-    return ERROR;
-  }
-  //空栈
-  if (Size(S) == 0)
-  {
-    return OVERFLOW;
-  }
+  if(S == NULL || Size(S) == 0) return S; 
+  Stack *tmp = S;
+  S = S->next;
+  free(tmp);
   
-  // Stack *tmp = S;
-  // S = S->next;
-  // free(tmp);
-  
-  //size - 1
-  return OK;
+  return S;
 };
 
 /*
 ** 获取栈顶元素
-** 参数 {
-** S: Stack型指针,指向栈底
-** }
+** @param {Stack *S} S
 ** 初始条件: 栈S已存在 且「非空」
 ** 操作结果: 返回栈顶元素e
 */
@@ -86,17 +73,7 @@ getTop(Stack *S)
   {
     return OVERFLOW;
   }
-  ElementType e;
-  while (S->next != NULL)
-  {
-    if (S->next->next==NULL)
-    {
-      e = S->next->data;
-      S->next = NULL;
-      return e;
-    }
-    S = S->next;
-  }
+  ElementType e = S->data;
   return e;
 };
 /*
@@ -121,12 +98,15 @@ Size(Stack *S)
 */
 void Destroy_Stack(Stack *S)
 {
-  // Stack *tmp;
-  // while (S->next)
-  // {
-  //   tmp = S;
-  //   S = S->next;
-  //   free(tmp);
-  // }
-  // free(S);
+  Stack *tmp;
+  while (S->next)
+  {
+    tmp = S;
+    S = S->next;
+    free(tmp);
+  }
+  free(S);
+  S=NULL;
+  
+  return;
 }

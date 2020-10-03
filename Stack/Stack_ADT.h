@@ -28,8 +28,8 @@ Stack
 /*
 ** 出栈
 */
-Status
-Pop(Stack *S);
+Stack
+*Pop(Stack *S);
 
 /*
 ** 获取栈顶元素
@@ -45,9 +45,6 @@ Size(Stack *S);
 
 /*
 ** 销毁
-** 参数 {
-** *S: Stack型指针的
-** }
 */
 void
 Destroy_Stack(Stack *S);
