@@ -6,20 +6,21 @@
 
 int main(int argc, char const *argv[])
 {
-  Stack *s = Init_Stack(&s);
-  printf("栈底指针地址: %p\n", s);
+  StackList *s = Init_Stack();
+  printf("stacklist pointer: %p\n", s);
+  printf("stack top pointer: %p\n", s->top);
+  Push(s,3);
+  printf("stack top pointer: %p\n", s->top);
+  Push(s,4);
+  printf("stack top pointer: %p\n", s->top);
+  
+  printf("stack top elem: %d\n", getTop(s));
 
-  //TOFIX 直接调用`PUSH(s,3)`
-  s = Push(s,3);
-  s = Push(s,4);
+  printf("pop before: %p\n", s->top);
+  Pop(s);
+  printf("pop  after: %p\n", s->top);
 
-  printf("获取栈顶元素: %d\n", getTop(s));
-
-  printf("pop before: %p\n", s);
-  s = Pop(s);
-  printf("pop after: %p\n", s);
-
-  printf("栈大小: %d\n", Size(s));
+  printf("stack size: %d\n", Size(s));
   
   Destroy_Stack(s);
   return 0;

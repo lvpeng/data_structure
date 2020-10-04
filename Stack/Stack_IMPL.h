@@ -5,12 +5,13 @@
 ** param: **S Stack型指针的指针, 也就是 &(*S)
 ** 返回值: 栈顶指针
 */
-struct Stack *
-Init_Stack(Stack **S)
+StackList
+*Init_Stack()
 {
-  *S = (Stack *)malloc(sizeof(Stack));//头指针
-  (*S)->next = NULL;//头结点的指针域
-  return *S;
+  StackList *s = (StackList *)malloc(sizeof(StackList));
+  s->top=NULL;
+  s->size=0;
+  return s;
 };
 
 /*
@@ -21,20 +22,21 @@ Init_Stack(Stack **S)
 ** 返回值: 栈顶指针
 ** 操作结果: 插入元素e为新的栈顶元素
 */
-Stack
-*Push(Stack *S, ElementType e)
+Status
+Push(StackList *S, ElementType e)
 {
   if (S != NULL)
   {
     //创建新结点
-    struct Stack *_sp = (Stack *)malloc(sizeof(Stack));
-    if(!_sp) return NULL;
+    Stack sp = (Stack)malloc(sizeof(Stack));
+    if(!sp) return ERROR;
     //** Key Point **
-    _sp->data = e;
-    _sp->next = S;
-    S = _sp;
+    sp->data = e;
+    sp->next = S->top;//头指针
+    S->top = sp;
+    S->size +=1;
   }
-  return S;
+  return OK;
 };
 
 /*
@@ -45,15 +47,18 @@ Stack
 ** 初始条件: 栈S已存在 且「非空」
 ** 操作结果: 删除S的栈顶元素，返回结果Status
 */
-Stack
-*Pop(Stack *S)
+Status
+Pop(StackList *S)
 {
-  if(S == NULL || Size(S) == 0) return S; 
-  Stack *tmp = S;
-  S = S->next;
+  if(S == NULL) return ERROR;
+  if(S->size==0) return OVERFLOW;
+
+  Stack tmp = S->top;
+  S->top = S->top->next;
+  S->size -=1;
   free(tmp);
   
-  return S;
+  return OK;
 };
 
 /*
@@ -63,31 +68,32 @@ Stack
 ** 操作结果: 返回栈顶元素e
 */
 ElementType
-getTop(Stack *S)
+getTop(StackList *S)
 {
   if (S == NULL)
   {
     return ERROR;
   }
-  if (S->next == NULL)
+  if (S->top == NULL)
   {
     return OVERFLOW;
   }
-  ElementType e = S->data;
+  ElementType e = S->top->data;
   return e;
 };
 /*
 ** 栈大小
 */
 int
-Size(Stack *S)
+Size(StackList *S)
 {
   if (S==NULL) return ERROR;
 
   int _size = 0;
-  while (S->next != NULL)
+
+  while (S->top != NULL)
   {
-    S = S->next;
+    S->top = S->top->next;
     _size += 1;
   }
   return _size;
@@ -96,17 +102,18 @@ Size(Stack *S)
 /*
 ** 销毁栈
 */
-void Destroy_Stack(Stack *S)
+void
+Destroy_Stack(StackList *S)
 {
-  Stack *tmp;
-  while (S->next)
+  Stack tmp;
+  while (S->top)
   {
-    tmp = S;
-    S = S->next;
+    tmp = S->top;
+    S->top = S->top->next;
     free(tmp);
   }
   free(S);
   S=NULL;
-  
+
   return;
 }

@@ -7,44 +7,50 @@
 /*
 ** 声明链栈抽象数据
 */
-typedef struct Stack
+typedef struct _node
 {
   ElementType data;
-  struct Stack *next;
-} Stack, *StackList;
+  struct _node *next;
+} node, *Stack;
+
+typedef struct
+{
+  int size;
+  Stack top;//头结点指针
+} StackList;
 
 /*
 ** 构造一个空栈
 */
-struct Stack *
-Init_Stack(Stack **S);
+StackList
+*Init_Stack();
 
 /*
 ** 入栈
 */
-Stack
-*Push(Stack *S, ElementType e);
+Status
+Push(StackList *S, ElementType e);
 
 /*
 ** 出栈
 */
-Stack
-*Pop(Stack *S);
+Status
+Pop(StackList *S);
 
 /*
 ** 获取栈顶元素
 */
 ElementType
-getTop(Stack *S);
+getTop(StackList *S);
 
 /*
 ** 栈大小
 */
 int
-Size(Stack *S);
+Size(StackList *S);
 
 /*
 ** 销毁
 */
 void
-Destroy_Stack(Stack *S);
+Destroy_Stack(StackList *S);
